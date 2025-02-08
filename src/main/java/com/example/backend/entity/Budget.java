@@ -17,8 +17,6 @@ public class Budget {
     String id;
     double amount;  // giơới hạn danh mục
     double spent; // đã chi tiêu
-    @Enumerated(EnumType.STRING)
-    BudgetType budgetType;
     int month; // tháng áp dụng
     int year; // năm áp dụng
 
