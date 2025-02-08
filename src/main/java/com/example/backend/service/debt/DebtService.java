@@ -10,6 +10,8 @@ import com.example.backend.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class DebtService {
     DebtRepository debtRepository;
     UserRepository userRepository;
+    @CacheEvict(value = "debts", allEntries = true)
     public void createDebt(DebtDAO request , String userId){
         User user = userRepository.findById(userId).orElseThrow();
         Debt debt = new Debt();
@@ -32,7 +35,7 @@ public class DebtService {
         debt.setDebtStatus(DebtStatus.valueOf(request.getDebtStatus().toLowerCase()));
         debtRepository.save(debt);
     }
-
+    @Cacheable("debts")
     public List<DebtDAO> getDebtByUser(String userId){
         if (!userRepository.existsById(userId)) {
             throw new RuntimeException("Không tìm thấy người dùng với ID: " + userId);
@@ -42,12 +45,12 @@ public class DebtService {
                 .map(debt -> new DebtDAO(debt.getId(),debt.getAmount(),debt.getDebtType().name(),debt.getBorrower(),debt.getDueDate(),debt.getDebtStatus().name()))
                 .collect(Collectors.toList());
     }
-
+    @CacheEvict(value = "debts", allEntries = true)
     public void deleteDebt(String debtId){
         debtRepository.deleteById(debtId);
     }
 
-
+    @CacheEvict(value = "debts", allEntries = true)
     public void updateDebt(DebtDAO debtDAO , String debtId){
         Debt debt = debtRepository.findById(debtId).orElseThrow();
         debt.setAmount(debtDAO.getAmount());

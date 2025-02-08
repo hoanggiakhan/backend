@@ -10,6 +10,8 @@ import com.example.backend.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 public class CateGoryService {
     CategoryRepository categoryRepository;
     UserRepository userRepository;
-
+    @CacheEvict(value = "categories", allEntries = true)
     public void createCategory(CategoryRequest request, String userId) {
         if (request == null || request.getName() == null || request.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Tên danh mục không được để trống.");
@@ -38,7 +40,7 @@ public class CateGoryService {
 
         categoryRepository.save(category);
     }
-
+    @Cacheable("categories")
     public List<CategoryResponse> getCategoryByUser(String userId) {
         if (!userRepository.existsById(userId)) {
             throw new RuntimeException("Không tìm thấy người dùng với ID: " + userId);
@@ -49,11 +51,11 @@ public class CateGoryService {
                         category.getCategoryType().name()))
                 .collect(Collectors.toList());
     }
-
+    @CacheEvict(value = "categories", allEntries = true)
     public void deleteCategoryById(String categoryId) {
         categoryRepository.deleteById(categoryId);
     }
-
+    @CacheEvict(value = "categories", allEntries = true)
     public void updateCategory(CategoryRequest request, String id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với ID: " + id));
