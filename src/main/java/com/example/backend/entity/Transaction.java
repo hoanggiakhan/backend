@@ -20,6 +20,8 @@ public class Transaction {
     double amount;
     String note;
     LocalDateTime date;
+
+    String type;
     @CreationTimestamp
     LocalDateTime createdAt;
 

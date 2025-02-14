@@ -1,9 +1,6 @@
-package com.example.backend.dao.request;
-
-
+package com.example.backend.dao;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,11 +8,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DebtDAO {
+public class TransactionDAO {
     String id;
     double amount;
-    String debtType;
-    String borrower;  // tên người vay mượn
-    LocalDateTime dueDate; // hạn
-    String debtStatus;
+    String notes;
+    LocalDateTime date;
+    String category;
+    String type;
 }

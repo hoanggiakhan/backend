@@ -37,4 +37,9 @@ public class CategoryController {
         cateGoryService.updateCategory(request , id);
         return ResponseEntity.ok("Sửa thành công");
     }
+
+    @GetMapping("/budget/{userId}")
+    public ResponseEntity<?> getCategory(@PathVariable String userId){
+        return ResponseEntity.ok(cateGoryService.getCategory(userId));
+    }
 }

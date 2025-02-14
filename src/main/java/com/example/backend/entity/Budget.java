@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +26,7 @@ public class Budget {
     @JoinColumn(name = "user_id")
     User user;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "category_id")
     Category category;
 }

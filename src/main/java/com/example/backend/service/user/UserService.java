@@ -23,4 +23,16 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public UserRequest getInfomation(String userId){
+        User user = userRepository.findById(userId).orElse(null);
+
+        UserRequest request = new UserRequest();
+        request.setId(user.getId());
+        request.setEmail(user.getEmail());
+        request.setFullName(user.getFullName());
+        request.setPassword(user.getPassword());
+        request.setUsername(user.getUsername());
+        return request;
+    }
+
 }

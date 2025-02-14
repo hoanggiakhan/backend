@@ -28,6 +28,9 @@ public class Category {
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category" , cascade = {CascadeType.DETACH , CascadeType.MERGE , CascadeType.PERSIST } )
     List<Transaction> transactions;
+
+    @OneToOne(mappedBy = "category" , cascade = CascadeType.ALL)
+    Budget budget;
 }

@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +32,10 @@ public class UserController {
     @PostMapping("/auth")
     public ResponseEntity<LoginResponse> auth(@RequestBody LoginRequest request){
         return ResponseEntity.ok(authenticated.auth(request));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> Infomation(@PathVariable String userId){
+        return ResponseEntity.ok(userService.getInfomation(userId));
     }
 }
