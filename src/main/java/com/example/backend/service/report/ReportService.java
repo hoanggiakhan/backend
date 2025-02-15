@@ -153,7 +153,40 @@ public class ReportService {
     
         return reports;
     }
-
+    public ReportDAO generateReportByMonth1(String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        // if (user == null) {
+        //     return Collections.emptyList(); // Trả về danh sách rỗng nếu không tìm thấy user
+        // }
+        List<Transaction> transactions = user.getTransactions();
+        LocalDate now = LocalDate.now();
+        int currentMonth = now.getMonthValue();
+        int currentYear = now.getYear();
+    
+        // Lọc giao dịch trong tháng hiện tại và năm hiện tại
+        List<Transaction> filteredTransactions = transactions.stream()
+                .filter(t -> {
+                    LocalDate transactionDate = t.getDate().toLocalDate();
+                    return transactionDate.getMonthValue() == currentMonth && transactionDate.getYear() == currentYear;
+                })
+                .collect(Collectors.toList());
+    
+        double income = filteredTransactions.stream()
+                .filter(t -> t.getType().equalsIgnoreCase("income"))
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    
+        double expense = filteredTransactions.stream()
+                .filter(t -> t.getType().equalsIgnoreCase("expense"))
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+    
+        // Tạo báo cáo cho tháng hiện tại
+        // List<ReportDAO> reports = new ArrayList<>();
+        // reports.add(new ReportDAO(currentMonth, currentYear, income, expense, income - expense));
+    
+        return new ReportDAO(currentMonth, currentYear, income, expense, income - expense);
+    }
     public void saveReports(ReportDAO reportDAO , String userId){
         User user = userRepository.findById(userId).orElse(null);
         LocalDate date = LocalDate.now();
@@ -169,4 +202,14 @@ public class ReportService {
         reportRepository.save(report);
     }
     
+    public List<ReportDAO> getReportByUser(String userId){
+        User user = userRepository.findById(userId).orElse(null);
+
+        return user.getReports().stream().map(report -> new ReportDAO(report.getMonth(),
+         report.getYear(), 
+         report.getTotalIncome(), 
+         report.getTotalExpense(), 
+         report.getSavings())
+        ).collect(Collectors.toList());
+    }
 }

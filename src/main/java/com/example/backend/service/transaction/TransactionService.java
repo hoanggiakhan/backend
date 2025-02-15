@@ -60,4 +60,15 @@ public class TransactionService {
             budgetRepository.saveAndFlush(budget);
         }
     }
+
+    public List<TransactionDAO> getFourTransaction(String userId){
+        return transactionRepository.findLatestTransactions(userId).stream().map(transaction -> 
+           new TransactionDAO(transaction.getId(),
+            transaction.getAmount(),
+            transaction.getNote(), 
+            transaction.getDate() ,
+            transaction.getCategory() != null ? transaction.getCategory().getName() : " " ,
+            transaction.getType())
+        ).collect(Collectors.toList());
+    }
 }

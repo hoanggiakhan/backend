@@ -38,4 +38,9 @@ public class UserController {
     public ResponseEntity<?> Infomation(@PathVariable String userId){
         return ResponseEntity.ok(userService.getInfomation(userId));
     }
+
+    @GetMapping("/dashboard/{userId}")
+    public ResponseEntity<?> getDashboard(@PathVariable String userId){
+        return userService.getDashboardData(userId);
+    }
 }

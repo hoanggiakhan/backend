@@ -3,10 +3,12 @@ package com.example.backend.config;
 public class Endpoint {
     public static String[] getPublic = {
         "/api/users/*",
+        "/api/users/dashboard/*",
         "/api/categories/*",
         "/api/categories/budget/*",
             "/api/debts/*",
             "/api/transactions/*",
+            "/api/transactions/four/*",
              "/api/reports/*",
               "/api/budgets/*"
     };

@@ -38,4 +38,9 @@ public class TransactionController {
          transactionService.saveTransaction(transactionDAO, userId);
          return ResponseEntity.ok("Lưu thành công");
     }
+
+    @GetMapping("/four/{userId}")
+    public ResponseEntity<?> getFourTransaction(@PathVariable String userId){
+        return ResponseEntity.ok(transactionService.getFourTransaction(userId));
+    }
 }
